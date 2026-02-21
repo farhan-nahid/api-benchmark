@@ -5,34 +5,38 @@ import { LatencyChart } from '@/components/charts/LatencyChart'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card'
 import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
+    Field,
+    FieldDescription,
+    FieldGroup,
+    FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select'
+import { exportToCSV } from '@/lib/export'
 import type { TestResult } from '@/lib/run-autocannon'
 import {
-  IconAlertCircle,
-  IconBolt,
-  IconCircleCheck,
-  IconClock,
-  IconPlayerPlay,
-  IconRotate,
+    IconAlertCircle,
+    IconBolt, IconChartLine,
+    IconCircleCheck,
+    IconClock,
+    IconDownload,
+    IconFlame,
+    IconPlayerPlay,
+    IconRotate,
+    IconServer
 } from '@tabler/icons-react'
 import { useState } from 'react'
 
@@ -43,10 +47,69 @@ export default function TestPage() {
   >('GET')
   const [duration, setDuration] = useState(5)
   const [connections, setConnections] = useState(10)
+  const [testType, setTestType] = useState('custom')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<TestResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
+
+  const TEST_TYPES = [
+    {
+      id: 'latency',
+      name: 'Latency Test',
+      description: 'Focus on response time stability',
+      icon: <IconClock className="h-5 w-5" />,
+      connections: 5,
+      duration: 10,
+      color: 'text-blue-500',
+      bg: 'bg-blue-500/10',
+    },
+    {
+      id: 'load',
+      name: 'Load Test',
+      description: 'Standard heavy traffic simulation',
+      icon: <IconServer className="h-5 w-5" />,
+      connections: 25,
+      duration: 30,
+      color: 'text-green-500',
+      bg: 'bg-green-500/10',
+    },
+    {
+      id: 'stress',
+      name: 'Stress Test',
+      description: 'Pushing the system to its breaking point',
+      icon: <IconFlame className="h-5 w-5" />,
+      connections: 50,
+      duration: 60,
+      color: 'text-orange-500',
+      bg: 'bg-orange-500/10',
+    },
+    {
+      id: 'capacity',
+      name: 'Capacity Test',
+      description: 'Find maximum throughput peak',
+      icon: <IconChartLine className="h-5 w-5" />,
+      connections: 40,
+      duration: 45,
+      color: 'text-purple-500',
+      bg: 'bg-purple-500/10',
+    },
+  ]
+
+  const applyTestType = (typeId: string) => {
+    setTestType(typeId)
+    const type = TEST_TYPES.find((t) => t.id === typeId)
+    if (type) {
+      setConnections(type.connections)
+      setDuration(type.duration)
+    }
+  }
+
+  const handleExport = () => {
+    if (result) {
+      exportToCSV(result)
+    }
+  }
 
   const handleRunTest = async () => {
     setLoading(true)
@@ -97,16 +160,28 @@ export default function TestPage() {
             Benchmark a single endpoint with custom configuration.
           </p>
         </div>
-        {result && (
+        <div className="flex items-center gap-3">
           <Button
             variant="outline"
-            onClick={() => setResult(null)}
+            onClick={handleExport}
+            className="flex items-center gap-2"
+            disabled={!result}
+          >
+            <IconDownload className="h-4 w-4" />
+            Export CSV
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setResult(null)
+              setTestType('custom')
+            }}
             className="flex items-center gap-2"
           >
             <IconRotate className="h-4 w-4" />
             Reset
           </Button>
-        )}
+        </div>
       </div>
 
       {!result ? (
@@ -118,19 +193,69 @@ export default function TestPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                Quick Presets
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {TEST_TYPES.map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => applyTestType(type.id)}
+                    className={`flex flex-col p-4 rounded-xl border-2 transition-all text-left group ${
+                      testType === type.id
+                        ? `border-primary shadow-md ${type.bg}`
+                        : 'border-muted hover:border-primary/50 bg-background'
+                    }`}
+                  >
+                    <div
+                      className={`p-2 rounded-lg w-fit mb-3 transition-colors ${
+                        testType === type.id
+                          ? 'bg-primary text-primary-foreground'
+                          : `${type.bg} ${type.color}`
+                      }`}
+                    >
+                      {type.icon}
+                    </div>
+                    <div className="font-bold text-sm tracking-tight">
+                      {type.name}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground mt-1 line-clamp-1">
+                      {type.description}
+                    </div>
+                    <div className="flex items-center gap-3 mt-3">
+                      <div className="bg-muted px-1.5 py-0.5 rounded text-[9px] font-mono">
+                        {type.connections} conn
+                      </div>
+                      <div className="bg-muted px-1.5 py-0.5 rounded text-[9px] font-mono">
+                        {type.duration}s
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <FieldGroup>
               <Field>
-                <FieldLabel>API URL</FieldLabel>
+                <div className="flex justify-between items-end mb-2">
+                  <FieldLabel className="mb-0">API URL</FieldLabel>
+                  {testType !== 'custom' && (
+                    <button
+                      onClick={() => setTestType('custom')}
+                      className="text-[10px] text-primary hover:underline font-medium"
+                    >
+                      Customize Settings
+                    </button>
+                  )}
+                </div>
                 <Input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://api.example.com/v1/resource"
-                  className="h-11"
+                  className="h-11 font-mono text-sm"
                 />
-                <FieldDescription>
-                  The endpoint you want to benchmark. Must be publicly
-                  accessible.
-                </FieldDescription>
               </Field>
             </FieldGroup>
 

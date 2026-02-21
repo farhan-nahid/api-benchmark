@@ -47,6 +47,7 @@ export interface TestResult {
   non2xx: number;
   resets: number;
   duration: number;
+  connections: number;
 }
 
 export async function runAutocannon(config: TestConfig): Promise<TestResult> {
@@ -109,6 +110,7 @@ export async function runAutocannon(config: TestConfig): Promise<TestResult> {
         non2xx: result.non2xx,
         resets: result.resets,
         duration: result.duration,
+        connections: connections,
       };
 
       resolve(formattedResult);
