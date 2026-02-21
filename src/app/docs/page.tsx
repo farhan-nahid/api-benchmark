@@ -1,3 +1,4 @@
+import { Card, CardContent } from "@/components/ui/card";
 import {
   IconAlertCircle,
   IconBolt,
@@ -5,7 +6,6 @@ import {
   IconServer,
   IconShield,
 } from "@tabler/icons-react";
-import { Card, CardContent } from "@/components/ui/card";
 
 export default function DocsPage() {
   return (
@@ -109,7 +109,7 @@ export default function DocsPage() {
                   <h5 className="mb-2 font-bold text-muted-foreground text-xs uppercase tracking-widest">
                     Duration
                   </h5>
-                  <p className="font-bold text-lg">Max 300 Seconds</p>
+                  <p className="font-bold text-lg">Max 290 Seconds</p>
                   <p className="mt-1 text-balance text-muted-foreground text-xs">
                     Longer tests may require higher serverless timeout settings.
                   </p>
@@ -118,7 +118,7 @@ export default function DocsPage() {
                   <h5 className="mb-2 font-bold text-muted-foreground text-xs uppercase tracking-widest">
                     Concurrency
                   </h5>
-                  <p className="font-bold text-lg">Max 50 Connections</p>
+                  <p className="font-bold text-lg">Max 100 Connections</p>
                   <p className="mt-1 text-balance text-muted-foreground text-xs">
                     High concurrency may hit CPU limits on small serverless instances.
                   </p>

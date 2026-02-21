@@ -220,18 +220,6 @@ function FieldError({
 }
 
 export {
-  Field,
-  FieldSeparator,
-  FieldSet,
-  FieldTitle,
-  type dLegend,
-  type Fie,
-  type Fiel,
-  type FieldConten,
-  type FieldDescri,
-  type FieldGrou,
-  type ldError,
-  type p,
-  type ption,
-  type t,
+    Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle
 };
+
