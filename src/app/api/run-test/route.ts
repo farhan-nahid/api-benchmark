@@ -1,5 +1,5 @@
-import type { TestConfig } from '@/lib/run-autocannon';
-import { runAutocannon } from '@/lib/run-autocannon';
+import type { TestConfig } from "@/lib/run-autocannon";
+import { runAutocannon } from "@/lib/run-autocannon";
 
 export async function POST(request: Request) {
   try {
@@ -8,8 +8,8 @@ export async function POST(request: Request) {
     return Response.json(result);
   } catch (error: any) {
     return Response.json(
-      { error: error.message || 'Internal Server Error' },
-      { status: 500 }
+      { error: error.message || "Internal Server Error" },
+      { status: 500 },
     );
   }
 }

@@ -1,155 +1,151 @@
-'use client'
+"use client";
 
-import { MetricCard } from '@/components/MetricCard'
-import { LatencyChart } from '@/components/charts/LatencyChart'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { MetricCard } from "@/components/MetricCard";
+import { LatencyChart } from "@/components/charts/LatencyChart";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
-    Field,
-    FieldDescription,
-    FieldGroup,
-    FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { exportToCSV } from "@/lib/export";
+import type { TestResult } from "@/lib/run-autocannon";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
-import { exportToCSV } from '@/lib/export'
-import type { TestResult } from '@/lib/run-autocannon'
-import {
-    IconAlertCircle,
-    IconBolt, IconChartLine,
-    IconCircleCheck,
-    IconClock,
-    IconDownload,
-    IconFlame,
-    IconPlayerPlay,
-    IconRotate,
-    IconServer
-} from '@tabler/icons-react'
-import { useState } from 'react'
+  IconAlertCircle,
+  IconBolt,
+  IconChartLine,
+  IconCircleCheck,
+  IconClock,
+  IconDownload,
+  IconFlame,
+  IconPlayerPlay,
+  IconRotate,
+  IconServer,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function TestPage() {
-  const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/posts/1')
-  const [method, setMethod] = useState<
-    'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-  >('GET')
-  const [duration, setDuration] = useState(5)
-  const [connections, setConnections] = useState(10)
-  const [testType, setTestType] = useState('custom')
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<TestResult | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [timeLeft, setTimeLeft] = useState<number | null>(null)
+  const [url, setUrl] = useState("https://jsonplaceholder.typicode.com/posts/1");
+  const [method, setMethod] = useState<"GET" | "POST" | "PUT" | "DELETE" | "PATCH">(
+    "GET",
+  );
+  const [duration, setDuration] = useState(5);
+  const [connections, setConnections] = useState(10);
+  const [testType, setTestType] = useState("custom");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<TestResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   const TEST_TYPES = [
     {
-      id: 'latency',
-      name: 'Latency Test',
-      description: 'Focus on response time stability',
+      id: "latency",
+      name: "Latency Test",
+      description: "Focus on response time stability",
       icon: <IconClock className="h-5 w-5" />,
       connections: 5,
       duration: 10,
-      color: 'text-blue-500',
-      bg: 'bg-blue-500/10',
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
     },
     {
-      id: 'load',
-      name: 'Load Test',
-      description: 'Standard heavy traffic simulation',
+      id: "load",
+      name: "Load Test",
+      description: "Standard heavy traffic simulation",
       icon: <IconServer className="h-5 w-5" />,
       connections: 25,
       duration: 30,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: "text-green-500",
+      bg: "bg-green-500/10",
     },
     {
-      id: 'stress',
-      name: 'Stress Test',
-      description: 'Pushing the system to its breaking point',
+      id: "stress",
+      name: "Stress Test",
+      description: "Pushing the system to its breaking point",
       icon: <IconFlame className="h-5 w-5" />,
       connections: 50,
       duration: 60,
-      color: 'text-orange-500',
-      bg: 'bg-orange-500/10',
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
     },
     {
-      id: 'capacity',
-      name: 'Capacity Test',
-      description: 'Find maximum throughput peak',
+      id: "capacity",
+      name: "Capacity Test",
+      description: "Find maximum throughput peak",
       icon: <IconChartLine className="h-5 w-5" />,
       connections: 40,
       duration: 45,
-      color: 'text-purple-500',
-      bg: 'bg-purple-500/10',
+      color: "text-purple-500",
+      bg: "bg-purple-500/10",
     },
-  ]
+  ];
 
   const applyTestType = (typeId: string) => {
-    setTestType(typeId)
-    const type = TEST_TYPES.find((t) => t.id === typeId)
+    setTestType(typeId);
+    const type = TEST_TYPES.find((t) => t.id === typeId);
     if (type) {
-      setConnections(type.connections)
-      setDuration(type.duration)
+      setConnections(type.connections);
+      setDuration(type.duration);
     }
-  }
+  };
 
   const handleExport = () => {
     if (result) {
-      exportToCSV(result)
+      exportToCSV(result);
     }
-  }
+  };
 
   const handleRunTest = async () => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
-    setTimeLeft(duration) // Start countdown
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setTimeLeft(duration); // Start countdown
 
     // Countdown interval
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev && prev > 0) return prev - 1
-        clearInterval(interval)
-        return null
-      })
-    }, 1000)
+        if (prev && prev > 0) return prev - 1;
+        clearInterval(interval);
+        return null;
+      });
+    }, 1000);
 
     try {
-      const response = await fetch('/api/run-test', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/run-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, method, duration, connections }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to run test')
+        throw new Error(data.error || "Failed to run test");
       }
 
-      console.log('Test result:', data)
+      console.log("Test result:", data);
 
-      setResult(data)
+      setResult(data);
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message);
     } finally {
-      clearInterval(interval)
-      setLoading(false)
-      setTimeLeft(null) // Reset countdown
+      clearInterval(interval);
+      setLoading(false);
+      setTimeLeft(null); // Reset countdown
     }
-  }
+  };
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-5xl">
@@ -173,8 +169,8 @@ export default function TestPage() {
           <Button
             variant="outline"
             onClick={() => {
-              setResult(null)
-              setTestType('custom')
+              setResult(null);
+              setTestType("custom");
             }}
             className="flex items-center gap-2"
           >
@@ -188,9 +184,7 @@ export default function TestPage() {
         <Card className="border-2 border-primary/5 shadow-xl">
           <CardHeader>
             <CardTitle>Test Configuration</CardTitle>
-            <CardDescription>
-              Configure the load test parameters below.
-            </CardDescription>
+            <CardDescription>Configure the load test parameters below.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
@@ -206,21 +200,19 @@ export default function TestPage() {
                     className={`flex flex-col p-4 rounded-xl border-2 transition-all text-left group ${
                       testType === type.id
                         ? `border-primary shadow-md ${type.bg}`
-                        : 'border-muted hover:border-primary/50 bg-background'
+                        : "border-muted hover:border-primary/50 bg-background"
                     }`}
                   >
                     <div
                       className={`p-2 rounded-lg w-fit mb-3 transition-colors ${
                         testType === type.id
-                          ? 'bg-primary text-primary-foreground'
+                          ? "bg-primary text-primary-foreground"
                           : `${type.bg} ${type.color}`
                       }`}
                     >
                       {type.icon}
                     </div>
-                    <div className="font-bold text-sm tracking-tight">
-                      {type.name}
-                    </div>
+                    <div className="font-bold text-sm tracking-tight">{type.name}</div>
                     <div className="text-[10px] text-muted-foreground mt-1 line-clamp-1">
                       {type.description}
                     </div>
@@ -241,9 +233,9 @@ export default function TestPage() {
               <Field>
                 <div className="flex justify-between items-end mb-2">
                   <FieldLabel className="mb-0">API URL</FieldLabel>
-                  {testType !== 'custom' && (
+                  {testType !== "custom" && (
                     <button
-                      onClick={() => setTestType('custom')}
+                      onClick={() => setTestType("custom")}
                       className="text-[10px] text-primary hover:underline font-medium"
                     >
                       Customize Settings
@@ -262,10 +254,7 @@ export default function TestPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Field>
                 <FieldLabel>HTTP Method</FieldLabel>
-                <Select
-                  value={method}
-                  onValueChange={(val: any) => setMethod(val)}
-                >
+                <Select value={method} onValueChange={(val: any) => setMethod(val)}>
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select method" />
                   </SelectTrigger>
@@ -289,9 +278,7 @@ export default function TestPage() {
                   onChange={(e) => setDuration(parseInt(e.target.value))}
                   className="h-11"
                 />
-                <FieldDescription>
-                  Max 300s for serverless stability.
-                </FieldDescription>
+                <FieldDescription>Max 300s for serverless stability.</FieldDescription>
               </Field>
 
               <Field>
@@ -304,9 +291,7 @@ export default function TestPage() {
                   onChange={(e) => setConnections(parseInt(e.target.value))}
                   className="h-11"
                 />
-                <FieldDescription>
-                  Concurrent requests (max 50).
-                </FieldDescription>
+                <FieldDescription>Concurrent requests (max 50).</FieldDescription>
               </Field>
             </div>
 
@@ -371,7 +356,7 @@ export default function TestPage() {
               unit="%"
               icon={<IconAlertCircle className="h-4 w-4 text-destructive" />}
               description={`${result.non2xx} non-2xx responses`}
-              className={result.non2xx > 0 ? 'border-destructive/50' : ''}
+              className={result.non2xx > 0 ? "border-destructive/50" : ""}
             />
           </div>
 
@@ -419,14 +404,11 @@ export default function TestPage() {
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-muted-foreground">Throughput</span>
                     <span className="font-medium">
-                      {(result.throughput.average / 1024 / 1024).toFixed(2)}{' '}
-                      MB/s
+                      {(result.throughput.average / 1024 / 1024).toFixed(2)} MB/s
                     </span>
                   </div>
                   <div className="flex justify-between border-b pb-2">
-                    <span className="text-muted-foreground">
-                      Total Transferred
-                    </span>
+                    <span className="text-muted-foreground">Total Transferred</span>
                     <span className="font-medium">
                       {(result.throughput.total / 1024 / 1024).toFixed(2)} MB
                     </span>
@@ -442,5 +424,5 @@ export default function TestPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

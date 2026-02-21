@@ -1,29 +1,30 @@
-'use client'
+"use client";
 
-import { ComparisonChart } from '@/components/charts/ComparisonChart'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { ComparisonChart } from "@/components/charts/ComparisonChart";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Field, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/card";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { exportToCSV } from '@/lib/export'
-import type { TestResult } from '@/lib/run-autocannon'
+} from "@/components/ui/select";
+import { exportToCSV } from "@/lib/export";
+import type { TestResult } from "@/lib/run-autocannon";
 import {
   IconAlertCircle,
-  IconBolt, IconChartLine,
+  IconBolt,
+  IconChartLine,
   IconClock,
   IconDownload,
   IconFlame,
@@ -31,153 +32,150 @@ import {
   IconPlus,
   IconRotate,
   IconServer,
-  IconTrash
-} from '@tabler/icons-react'
-import { useState } from 'react'
+  IconTrash,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function ComparePage() {
   const [urls, setUrls] = useState([
-    'https://jsonplaceholder.typicode.com/posts/1',
-    'https://jsonplaceholder.typicode.com/todos/1',
-  ])
-  const [method, setMethod] = useState<
-    'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-  >('GET')
-  const [duration, setDuration] = useState(5)
-  const [connections, setConnections] = useState(10)
-  const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState<TestResult[] | null>(null)
-  const [testType, setTestType] = useState('custom')
-  const [error, setError] = useState<string | null>(null)
-  const [timeLeft, setTimeLeft] = useState<number | null>(null)
+    "https://jsonplaceholder.typicode.com/posts/1",
+    "https://jsonplaceholder.typicode.com/todos/1",
+  ]);
+  const [method, setMethod] = useState<"GET" | "POST" | "PUT" | "DELETE" | "PATCH">(
+    "GET",
+  );
+  const [duration, setDuration] = useState(5);
+  const [connections, setConnections] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<TestResult[] | null>(null);
+  const [testType, setTestType] = useState("custom");
+  const [error, setError] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   const TEST_TYPES = [
     {
-      id: 'latency',
-      name: 'Latency Test',
-      description: 'Focus on response time stability',
+      id: "latency",
+      name: "Latency Test",
+      description: "Focus on response time stability",
       icon: <IconClock className="h-5 w-5" />,
       connections: 5,
       duration: 10,
-      color: 'text-blue-500',
-      bg: 'bg-blue-500/10',
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
     },
     {
-      id: 'load',
-      name: 'Load Test',
-      description: 'Standard heavy traffic simulation',
+      id: "load",
+      name: "Load Test",
+      description: "Standard heavy traffic simulation",
       icon: <IconServer className="h-5 w-5" />,
       connections: 25,
       duration: 30,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: "text-green-500",
+      bg: "bg-green-500/10",
     },
     {
-      id: 'stress',
-      name: 'Stress Test',
-      description: 'Pushing the system to its breaking point',
+      id: "stress",
+      name: "Stress Test",
+      description: "Pushing the system to its breaking point",
       icon: <IconFlame className="h-5 w-5" />,
       connections: 50,
       duration: 60,
-      color: 'text-orange-500',
-      bg: 'bg-orange-500/10',
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
     },
     {
-      id: 'capacity',
-      name: 'Capacity Test',
-      description: 'Find maximum throughput peak',
+      id: "capacity",
+      name: "Capacity Test",
+      description: "Find maximum throughput peak",
       icon: <IconChartLine className="h-5 w-5" />,
       connections: 40,
       duration: 45,
-      color: 'text-purple-500',
-      bg: 'bg-purple-500/10',
+      color: "text-purple-500",
+      bg: "bg-purple-500/10",
     },
-  ]
+  ];
 
   const applyTestType = (typeId: string) => {
-    setTestType(typeId)
-    const type = TEST_TYPES.find((t) => t.id === typeId)
+    setTestType(typeId);
+    const type = TEST_TYPES.find((t) => t.id === typeId);
     if (type) {
-      setConnections(type.connections)
-      setDuration(type.duration)
+      setConnections(type.connections);
+      setDuration(type.duration);
     }
-  }
+  };
 
   const handleExport = () => {
     if (results) {
-      exportToCSV(results)
+      exportToCSV(results);
     }
-  }
+  };
 
   const COLORS = [
-    'border-primary',
-    'border-blue-500',
-    'border-green-500',
-    'border-purple-500',
-    'border-orange-500',
-  ]
+    "border-primary",
+    "border-blue-500",
+    "border-green-500",
+    "border-purple-500",
+    "border-orange-500",
+  ];
 
   const addUrl = () => {
-    if (urls.length < 5) setUrls([...urls, ''])
-  }
+    if (urls.length < 5) setUrls([...urls, ""]);
+  };
 
   const removeUrl = (index: number) => {
     if (urls.length > 2) {
-      const newUrls = [...urls]
-      newUrls.splice(index, 1)
-      setUrls(newUrls)
+      const newUrls = [...urls];
+      newUrls.splice(index, 1);
+      setUrls(newUrls);
     }
-  }
+  };
 
   const updateUrl = (index: number, value: string) => {
-    const newUrls = [...urls]
-    newUrls[index] = value
-    setUrls(newUrls)
-  }
+    const newUrls = [...urls];
+    newUrls[index] = value;
+    setUrls(newUrls);
+  };
 
   const handleRunCompare = async () => {
-    setLoading(true)
-    setError(null)
-    setResults(null)
-    setTimeLeft(duration) // start countdown
+    setLoading(true);
+    setError(null);
+    setResults(null);
+    setTimeLeft(duration); // start countdown
 
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev && prev > 0) return prev - 1
-        clearInterval(interval)
-        return null
-      })
-    }, 1000)
+        if (prev && prev > 0) return prev - 1;
+        clearInterval(interval);
+        return null;
+      });
+    }, 1000);
 
     try {
-      const response = await fetch('/api/compare-test', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/compare-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ urls, method, duration, connections }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
-      if (!response.ok)
-        throw new Error(data.error || 'Failed to run comparison')
+      if (!response.ok) throw new Error(data.error || "Failed to run comparison");
 
-      setResults(data.apis)
+      setResults(data.apis);
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message);
     } finally {
-      clearInterval(interval)
-      setLoading(false)
-      setTimeLeft(null)
+      clearInterval(interval);
+      setLoading(false);
+      setTimeLeft(null);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-6xl">
       <div className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">
-            Compare APIs
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight text-primary">Compare APIs</h1>
           <p className="text-muted-foreground mt-1 text-lg">
             Measure up to 5 APIs side-by-side with identical settings.
           </p>
@@ -195,8 +193,8 @@ export default function ComparePage() {
           <Button
             variant="outline"
             onClick={() => {
-              setResults(null)
-              setTestType('custom')
+              setResults(null);
+              setTestType("custom");
             }}
             className="flex items-center gap-2"
           >
@@ -229,21 +227,19 @@ export default function ComparePage() {
                     className={`flex flex-col p-4 rounded-xl border-2 transition-all text-left group ${
                       testType === type.id
                         ? `border-primary shadow-md ${type.bg}`
-                        : 'border-muted hover:border-primary/50 bg-background'
+                        : "border-muted hover:border-primary/50 bg-background"
                     }`}
                   >
                     <div
                       className={`p-2 rounded-lg w-fit mb-3 transition-colors ${
                         testType === type.id
-                          ? 'bg-primary text-primary-foreground'
+                          ? "bg-primary text-primary-foreground"
                           : `${type.bg} ${type.color}`
                       }`}
                     >
                       {type.icon}
                     </div>
-                    <div className="font-bold text-sm tracking-tight">
-                      {type.name}
-                    </div>
+                    <div className="font-bold text-sm tracking-tight">{type.name}</div>
                     <div className="text-[10px] text-muted-foreground mt-1 line-clamp-1">
                       {type.description}
                     </div>
@@ -314,19 +310,16 @@ export default function ComparePage() {
               <Field>
                 <div className="flex justify-between items-end mb-2">
                   <FieldLabel className="mb-0">Shared Method</FieldLabel>
-                  {testType !== 'custom' && (
+                  {testType !== "custom" && (
                     <button
-                      onClick={() => setTestType('custom')}
+                      onClick={() => setTestType("custom")}
                       className="text-[10px] text-primary hover:underline font-medium"
                     >
                       Customize Settings
                     </button>
                   )}
                 </div>
-                <Select
-                  value={method}
-                  onValueChange={(val: any) => setMethod(val)}
-                >
+                <Select value={method} onValueChange={(val: any) => setMethod(val)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -465,15 +458,11 @@ export default function ComparePage() {
                     <thead>
                       <tr className="border-b bg-muted/20">
                         <th className="text-left py-3 px-4 font-bold">API</th>
-                        <th className="text-right py-3 px-4 font-bold">
-                          Avg Latency
-                        </th>
+                        <th className="text-right py-3 px-4 font-bold">Avg Latency</th>
                         <th className="text-right py-3 px-4 font-bold">P90</th>
                         <th className="text-right py-3 px-4 font-bold">P99</th>
                         <th className="text-right py-3 px-4 font-bold">RPS</th>
-                        <th className="text-right py-3 px-4 font-bold">
-                          Status
-                        </th>
+                        <th className="text-right py-3 px-4 font-bold">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -488,11 +477,9 @@ export default function ComparePage() {
                                 <div
                                   className={`w-3 h-3 rounded-full ${COLORS[
                                     index
-                                  ].replace('border-', 'bg-')}`}
+                                  ].replace("border-", "bg-")}`}
                                 />
-                                <span className="font-bold">
-                                  API {index + 1}
-                                </span>
+                                <span className="font-bold">API {index + 1}</span>
                               </div>
                               <span className="text-xs text-muted-foreground truncate max-w-[200px] mt-1">
                                 {res.url}
@@ -513,9 +500,7 @@ export default function ComparePage() {
                           </td>
                           <td className="py-4 px-4 text-right">
                             <Badge
-                              variant={
-                                res.non2xx > 0 ? 'destructive' : 'outline'
-                              }
+                              variant={res.non2xx > 0 ? "destructive" : "outline"}
                               className="text-[10px] px-1.5 h-5"
                             >
                               {res.non2xx} errors
@@ -532,5 +517,5 @@ export default function ComparePage() {
         </>
       )}
     </div>
-  )
+  );
 }

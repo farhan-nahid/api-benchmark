@@ -1,12 +1,12 @@
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 import {
   IconActivity,
   IconBook,
   IconChartBar,
   IconLayersIntersect,
-} from '@tabler/icons-react'
-import Link from 'next/link'
-import { buttonVariants } from './ui/button'
+} from "@tabler/icons-react";
+import Link from "next/link";
+import { buttonVariants } from "./ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,9 +15,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/" className="flex items-center space-x-2">
             <IconActivity className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold tracking-tight">
-              API Benchmark
-            </span>
+            <span className="text-xl font-bold tracking-tight">API Benchmark</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <Link
@@ -47,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               href="https://github.com/farhan-nahid/api-benchmark"
               target="_blank"
               rel="noreferrer"
-              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
             >
               GitHub
             </a>
@@ -68,5 +66,5 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </div>
-  )
+  );
 }
