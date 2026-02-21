@@ -23,9 +23,7 @@ import { exportToCSV } from '@/lib/export'
 import type { TestResult } from '@/lib/run-autocannon'
 import {
   IconAlertCircle,
-  IconBolt,
-  IconChartBar,
-  IconChartLine,
+  IconBolt, IconChartLine,
   IconClock,
   IconDownload,
   IconFlame,
@@ -33,7 +31,7 @@ import {
   IconPlus,
   IconRotate,
   IconServer,
-  IconTrash,
+  IconTrash
 } from '@tabler/icons-react'
 import { useState } from 'react'
 
@@ -434,23 +432,6 @@ export default function ComparePage() {
                     metric="rps"
                     title="Requests Per Second"
                     unit="req/s"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card className="shadow-md overflow-hidden">
-                <CardHeader className="bg-muted/30 pb-4">
-                  <div className="flex items-center gap-2 bg-background w-fit px-2 py-1 rounded border mb-2 text-xs font-bold text-destructive">
-                    <IconChartBar className="h-3 w-3" />
-                    TAIL LATENCY (P95)
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <ComparisonChart
-                    results={results}
-                    metric="p95"
-                    title="95th Percentile"
-                    unit="ms"
                   />
                 </CardContent>
               </Card>

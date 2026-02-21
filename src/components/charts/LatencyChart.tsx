@@ -1,12 +1,11 @@
 import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Cell,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts'
 
 interface LatencyData {
@@ -31,10 +30,16 @@ export function LatencyChart({ data }: LatencyChartProps) {
   return (
     <div className="h-[300px] w-full mt-4">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart
+        <AreaChart
           data={chartData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
+          <defs>
+            <linearGradient id="colorLatency" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+            </linearGradient>
+          </defs>
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}
@@ -59,28 +64,47 @@ export function LatencyChart({ data }: LatencyChartProps) {
             }}
           />
           <Tooltip
-            cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
-            contentStyle={{
-              backgroundColor: 'hsl(var(--background))',
-              borderColor: 'hsl(var(--border))',
-              borderRadius: '8px',
-              fontSize: '12px',
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-background border rounded-lg p-3 shadow-lg text-xs">
+                    <p className="font-bold text-primary mb-1">
+                      {payload[0].payload.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="font-mono font-bold text-base">
+                        {payload[0].value}
+                      </span>
+                      <span className="text-muted-foreground">ms</span>
+                    </div>
+                  </div>
+                )
+              }
+              return null
             }}
           />
-          <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-            {chartData.map((_, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  index === 4
-                    ? 'hsl(var(--destructive))'
-                    : 'hsl(var(--primary))'
-                }
-                fillOpacity={0.8 + index * 0.05}
-              />
-            ))}
-          </Bar>
-        </BarChart>
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke="hsl(var(--primary))"
+            strokeWidth={3}
+            fillOpacity={1}
+            fill="url(#colorLatency)"
+            animationDuration={1500}
+            dot={{
+              r: 4,
+              fill: 'hsl(var(--background))',
+              stroke: 'hsl(var(--primary))',
+              strokeWidth: 2,
+            }}
+            activeDot={{
+              r: 6,
+              fill: 'hsl(var(--primary))',
+              stroke: 'hsl(var(--background))',
+              strokeWidth: 2,
+            }}
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   )
