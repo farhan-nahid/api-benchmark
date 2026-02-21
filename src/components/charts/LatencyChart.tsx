@@ -28,7 +28,7 @@ export function LatencyChart({ data }: LatencyChartProps) {
   ];
 
   return (
-    <div className="h-[300px] w-full mt-4">
+    <div className="mt-4 h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
           <defs>
@@ -64,12 +64,12 @@ export function LatencyChart({ data }: LatencyChartProps) {
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-background border rounded-lg p-3 shadow-lg text-xs">
-                    <p className="font-bold text-primary mb-1">
+                  <div className="rounded-lg border bg-background p-3 text-xs shadow-lg">
+                    <p className="mb-1 font-bold text-primary">
                       {payload[0].payload.name}
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="font-mono font-bold text-base">
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="font-bold font-mono text-base">
                         {payload[0].value}
                       </span>
                       <span className="text-muted-foreground">ms</span>

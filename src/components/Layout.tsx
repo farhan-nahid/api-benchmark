@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import {
   IconActivity,
   IconBook,
@@ -6,6 +5,7 @@ import {
   IconLayersIntersect,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -15,26 +15,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/" className="flex items-center space-x-2">
             <IconActivity className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold tracking-tight">API Benchmark</span>
+            <span className="font-bold text-xl tracking-tight">API Benchmark</span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden items-center space-x-6 font-medium text-sm md:flex">
             <Link
               href="/test"
-              className="transition-colors hover:text-primary flex items-center gap-1"
+              className="flex items-center gap-1 transition-colors hover:text-primary"
             >
               <IconChartBar className="h-4 w-4" />
               Single Test
             </Link>
             <Link
               href="/compare"
-              className="transition-colors hover:text-primary flex items-center gap-1"
+              className="flex items-center gap-1 transition-colors hover:text-primary"
             >
               <IconLayersIntersect className="h-4 w-4" />
               Compare
             </Link>
             <Link
               href="/docs"
-              className="transition-colors hover:text-primary flex items-center gap-1"
+              className="flex items-center gap-1 transition-colors hover:text-primary"
             >
               <IconBook className="h-4 w-4" />
               Docs
@@ -54,12 +54,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </header>
       <main className="flex-1">{children}</main>
       <footer className="border-t py-6 md:py-0">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row px-4">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:h-24 md:flex-row">
+          <p className="text-center text-muted-foreground text-sm leading-loose md:text-left">
             Built with Nextjs, Autocannon, and shadcn/ui.
           </p>
           <div className="flex items-center space-x-4">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               © 2026 API Benchmark Tool
             </span>
           </div>

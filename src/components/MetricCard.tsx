@@ -21,18 +21,18 @@ export function MetricCard({
   return (
     <Card className={cn("overflow-hidden", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle className="font-medium text-sm">{title}</CardTitle>
         {icon && <div className="text-muted-foreground">{icon}</div>}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
+        <div className="font-bold text-2xl">
           {value}
           {unit && (
-            <span className="text-sm font-normal text-muted-foreground ml-1">{unit}</span>
+            <span className="ml-1 font-normal text-muted-foreground text-sm">{unit}</span>
           )}
         </div>
         {description && (
-          <p className="text-xs text-muted-foreground mt-1">{description}</p>
+          <p className="mt-1 text-muted-foreground text-xs">{description}</p>
         )}
       </CardContent>
     </Card>

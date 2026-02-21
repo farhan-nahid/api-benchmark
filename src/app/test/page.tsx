@@ -1,7 +1,20 @@
 "use client";
 
-import { MetricCard } from "@/components/MetricCard";
+import {
+  IconAlertCircle,
+  IconBolt,
+  IconChartLine,
+  IconCircleCheck,
+  IconClock,
+  IconDownload,
+  IconFlame,
+  IconPlayerPlay,
+  IconRotate,
+  IconServer,
+} from "@tabler/icons-react";
+import { useState } from "react";
 import { LatencyChart } from "@/components/charts/LatencyChart";
+import { MetricCard } from "@/components/MetricCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,19 +35,6 @@ import {
 } from "@/components/ui/select";
 import { exportToCSV } from "@/lib/export";
 import type { TestResult } from "@/lib/run-autocannon";
-import {
-  IconAlertCircle,
-  IconBolt,
-  IconChartLine,
-  IconCircleCheck,
-  IconClock,
-  IconDownload,
-  IconFlame,
-  IconPlayerPlay,
-  IconRotate,
-  IconServer,
-} from "@tabler/icons-react";
-import { useState } from "react";
 
 export default function TestPage() {
   const [url, setUrl] = useState("https://jsonplaceholder.typicode.com/posts/1");
@@ -148,11 +148,11 @@ export default function TestPage() {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4 max-w-5xl">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto max-w-5xl px-4 py-10">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Single API Test</h1>
-          <p className="text-muted-foreground mt-1 text-lg">
+          <h1 className="font-bold text-3xl tracking-tight">Single API Test</h1>
+          <p className="mt-1 text-lg text-muted-foreground">
             Benchmark a single endpoint with custom configuration.
           </p>
         </div>
@@ -188,23 +188,23 @@ export default function TestPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">
                 Quick Presets
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
                 {TEST_TYPES.map((type) => (
                   <button
                     key={type.id}
                     type="button"
                     onClick={() => applyTestType(type.id)}
-                    className={`flex flex-col p-4 rounded-xl border-2 transition-all text-left group ${
+                    className={`group flex flex-col rounded-xl border-2 p-4 text-left transition-all ${
                       testType === type.id
                         ? `border-primary shadow-md ${type.bg}`
-                        : "border-muted hover:border-primary/50 bg-background"
+                        : "border-muted bg-background hover:border-primary/50"
                     }`}
                   >
                     <div
-                      className={`p-2 rounded-lg w-fit mb-3 transition-colors ${
+                      className={`mb-3 w-fit rounded-lg p-2 transition-colors ${
                         testType === type.id
                           ? "bg-primary text-primary-foreground"
                           : `${type.bg} ${type.color}`
@@ -213,14 +213,14 @@ export default function TestPage() {
                       {type.icon}
                     </div>
                     <div className="font-bold text-sm tracking-tight">{type.name}</div>
-                    <div className="text-[10px] text-muted-foreground mt-1 line-clamp-1">
+                    <div className="mt-1 line-clamp-1 text-[10px] text-muted-foreground">
                       {type.description}
                     </div>
-                    <div className="flex items-center gap-3 mt-3">
-                      <div className="bg-muted px-1.5 py-0.5 rounded text-[9px] font-mono">
+                    <div className="mt-3 flex items-center gap-3">
+                      <div className="rounded bg-muted px-1.5 py-0.5 font-mono text-[9px]">
                         {type.connections} conn
                       </div>
-                      <div className="bg-muted px-1.5 py-0.5 rounded text-[9px] font-mono">
+                      <div className="rounded bg-muted px-1.5 py-0.5 font-mono text-[9px]">
                         {type.duration}s
                       </div>
                     </div>
@@ -231,15 +231,18 @@ export default function TestPage() {
 
             <FieldGroup>
               <Field>
-                <div className="flex justify-between items-end mb-2">
+                <div className="mb-2 flex items-end justify-between">
                   <FieldLabel className="mb-0">API URL</FieldLabel>
                   {testType !== "custom" && (
-                    <button
+                    <Button
+                      variant="ghost"
+                      type="button"
+                      size="sm"
                       onClick={() => setTestType("custom")}
-                      className="text-[10px] text-primary hover:underline font-medium"
+                      className="font-medium text-[10px] text-primary hover:underline"
                     >
                       Customize Settings
-                    </button>
+                    </Button>
                   )}
                 </div>
                 <Input
@@ -251,7 +254,7 @@ export default function TestPage() {
               </Field>
             </FieldGroup>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <Field>
                 <FieldLabel>HTTP Method</FieldLabel>
                 <Select value={method} onValueChange={(val: any) => setMethod(val)}>
@@ -296,14 +299,14 @@ export default function TestPage() {
             </div>
 
             {error && (
-              <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive flex items-start gap-3 text-sm animate-in fade-in slide-in-from-top-1">
-                <IconAlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+              <div className="fade-in slide-in-from-top-1 flex animate-in items-start gap-3 rounded-lg border border-destructive/20 bg-destructive/10 p-4 text-destructive text-sm">
+                <IconAlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
                 <p className="font-medium">{error}</p>
               </div>
             )}
 
             {loading && timeLeft !== null && (
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="mb-2 text-muted-foreground text-sm">
                 Time remaining: <span className="font-bold">{timeLeft}s</span>
               </p>
             )}
@@ -311,7 +314,7 @@ export default function TestPage() {
             <Button
               onClick={handleRunTest}
               disabled={loading}
-              className="w-full h-12 text-base font-bold shadow-lg shadow-primary/20"
+              className="h-12 w-full font-bold text-base shadow-lg shadow-primary/20"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
@@ -328,9 +331,9 @@ export default function TestPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="fade-in animate-in space-y-8 duration-500">
           {/* Results Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MetricCard
               title="Requests/sec"
               value={result.requests.average.toFixed(2)}
@@ -360,8 +363,8 @@ export default function TestPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <Card className="lg:col-span-2 shadow-md">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <Card className="shadow-md lg:col-span-2">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
