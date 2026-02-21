@@ -44,7 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
           <div className="flex items-center space-x-2">
             <a
-              href="https://github.com/farhan/api-benchmark"
+              href="https://github.com/farhan-nahid/api-benchmark"
               target="_blank"
               rel="noreferrer"
               className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}

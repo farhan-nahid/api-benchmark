@@ -43,7 +43,7 @@ Benchmark your APIs with confidence. A lightweight, serverless-ready, and statel
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/api-benchmark.git
+   git clone https://github.com/farhan-nahid/api-benchmark
    cd api-benchmark
    ```
 
