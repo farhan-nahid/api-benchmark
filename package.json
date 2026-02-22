@@ -4,14 +4,18 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --port 3000",
-    "build": "next build",
+    "build": "next build --webpack",
+    "pwa": "next build --webpack && next start",
+    "build:turbopack": "next build",
     "start": "next start",
     "lint": "next lint && biome check",
     "format": "biome format --write",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate-icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
+    "@ducanh2912/next-pwa": "^10.2.9",
     "@fontsource-variable/geist": "^5.2.8",
     "@tabler/icons-react": "^3.37.1",
     "autocannon": "^8.0.0",
@@ -34,6 +38,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "sharp": "^0.34.5",
     "typescript": "^5.7.2"
   }
 }
