@@ -8,8 +8,8 @@
     "pwa": "next build --webpack && next start",
     "build:turbopack": "next build",
     "start": "next start",
-    "lint": "next lint && biome check",
-    "format": "biome format --write",
+    "lint": "next lint && npx @biomejs/biome check",
+    "format": "npx @biomejs/biome check --write",
     "typecheck": "tsc --noEmit",
     "generate-icons": "node scripts/generate-icons.mjs"
   },
