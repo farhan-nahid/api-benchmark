@@ -2,8 +2,6 @@
 
 import {
   IconAlertCircle,
-  IconBolt,
-  IconClock,
   IconPlayerPlay,
   IconPlus,
   IconRotate,
@@ -11,10 +9,8 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { BenchmarkHeader } from "@/components/benchmark-header";
-import { ComparisonChart } from "@/components/charts/ComparisonChart";
 import { CommonSettings } from "@/components/common-settings";
 import { PresetSelector } from "@/components/preset-selector";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,8 +22,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { compareTestsAction } from "@/lib/actions";
 import { BENCHMARK_PRESETS, type HTTPMethod } from "@/lib/benchmark-types";
+import { COLORS } from "@/lib/constants";
 import { exportToCSV } from "@/lib/export";
 import type { TestResult } from "@/lib/run-autocannon";
+import { Analysis } from "./analysis";
+import { ComparisonTable } from "./comparison-table";
 
 export function CompareForm() {
   const [urls, setUrls] = useState([
@@ -53,14 +52,6 @@ export function CompareForm() {
       setDuration(type.duration);
     }
   };
-
-  const COLORS = [
-    "border-primary",
-    "border-blue-500",
-    "border-green-500",
-    "border-purple-500",
-    "border-orange-500",
-  ];
 
   const addUrl = () => {
     if (urls.length < 5) setUrls([...urls, ""]);
@@ -235,125 +226,8 @@ export function CompareForm() {
         </Card>
       ) : (
         <div className="fade-in animate-in space-y-10 duration-500">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="overflow-hidden shadow-md">
-              <CardHeader className="bg-muted/30 pb-4">
-                <div className="mb-2 flex w-fit items-center gap-2 rounded border bg-background px-2 py-1 font-bold text-primary text-xs">
-                  <IconClock className="h-3 w-3" />
-                  LATENCY (AVG)
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <ComparisonChart
-                  results={results}
-                  metric="avgLatency"
-                  title="Average Latency"
-                  unit="ms"
-                />
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden shadow-md">
-              <CardHeader className="bg-muted/30 pb-4">
-                <div className="mb-2 flex w-fit items-center gap-2 rounded border bg-background px-2 py-1 font-bold text-blue-500 text-xs">
-                  <IconBolt className="h-3 w-3" />
-                  THROUGHPUT (RPS)
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <ComparisonChart
-                  results={results}
-                  metric="rps"
-                  title="Requests Per Second"
-                  unit="req/s"
-                />
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden shadow-md">
-              <CardHeader className="bg-muted/30 pb-4">
-                <div className="mb-2 flex w-fit items-center gap-2 rounded border bg-background px-2 py-1 font-bold text-green-500 text-xs">
-                  <IconPlus className="h-3 w-3" />
-                  TOTAL REQUESTS
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <ComparisonChart
-                  results={results}
-                  metric="totalRequests"
-                  title="Total Requests Handled"
-                  unit="reqs"
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="overflow-hidden border-t-4 border-t-primary shadow-xl">
-            <CardHeader className="bg-muted/10">
-              <CardTitle>Detailed Comparison Table</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b bg-muted/20">
-                      <th className="px-4 py-3 text-left font-bold">API</th>
-                      <th className="px-4 py-3 text-right font-bold">Avg Latency</th>
-                      <th className="px-4 py-3 text-right font-bold">P90</th>
-                      <th className="px-4 py-3 text-right font-bold">P99</th>
-                      <th className="px-4 py-3 text-right font-bold">RPS</th>
-                      <th className="px-4 py-3 text-right font-bold">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {results.map((res, index) => (
-                      <tr
-                        key={index}
-                        className="border-b transition-colors hover:bg-muted/10"
-                      >
-                        <td className="px-4 py-4">
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                              <div
-                                className={`h-3 w-3 rounded-full ${COLORS[index].replace(
-                                  "border-",
-                                  "bg-",
-                                )}`}
-                              />
-                              <span className="font-bold">API {index + 1}</span>
-                            </div>
-                            <span className="mt-1 max-w-50 truncate text-muted-foreground text-xs">
-                              {res.url}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-right font-mono">
-                          {res.latency?.average?.toFixed(1)} ms
-                        </td>
-                        <td className="px-4 py-4 text-right font-mono">
-                          {res.latency.p90} ms
-                        </td>
-                        <td className="px-4 py-4 text-right font-mono">
-                          {res.latency.p99} ms
-                        </td>
-                        <td className="px-4 py-4 text-right font-mono">
-                          {res.requests?.average?.toFixed(1)}
-                        </td>
-                        <td className="px-4 py-4 text-right">
-                          <Badge
-                            variant={res.non2xx > 0 ? "destructive" : "outline"}
-                            className="h-5 px-1.5 text-[10px]"
-                          >
-                            {res.non2xx} errors
-                          </Badge>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
+          <Analysis data={results} />
+          <ComparisonTable data={results} />
         </div>
       )}
     </div>
