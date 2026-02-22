@@ -57,7 +57,7 @@ export async function runAutocannon(config: TestConfig): Promise<TestResult> {
   }
 
   // Enforce limits for serverless safety
-  const duration = Math.min(config.duration || 5, 300);
+  const duration = Math.min(config.duration || 5, 290);
   const connections = Math.min(config.connections || 10, 100);
 
   return new Promise((resolve, reject) => {

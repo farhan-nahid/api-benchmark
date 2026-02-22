@@ -38,37 +38,32 @@ function isInternalIP(hostname: string): boolean {
   return false;
 }
 
-export const urlSchema = z
-  .string()
-  .url()
-  .refine(
-    (url) => {
-      try {
-        const parsed = new URL(url);
-        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-          return false;
-        }
-        const hostname = parsed.hostname.toLowerCase();
-
-        if (
-          INTERNAL_HOSTNAMES.some((h) => hostname === h || hostname.endsWith(`.${h}`))
-        ) {
-          return false;
-        }
-
-        if (isInternalIP(hostname)) {
-          return false;
-        }
-
-        return true;
-      } catch {
+export const urlSchema = z.url().refine(
+  (url) => {
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
         return false;
       }
-    },
-    {
-      message: "Invalid URL or internal address blocked for security.",
-    },
-  );
+      const hostname = parsed.hostname.toLowerCase();
+
+      if (INTERNAL_HOSTNAMES.some((h) => hostname === h || hostname.endsWith(`.${h}`))) {
+        return false;
+      }
+
+      if (isInternalIP(hostname)) {
+        return false;
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  {
+    message: "Invalid URL or internal address blocked for security.",
+  },
+);
 
 export function validateUrl(url: string) {
   return urlSchema.safeParse(url);

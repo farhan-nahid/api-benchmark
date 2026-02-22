@@ -1,4 +1,3 @@
-import type { TestResult } from "@/lib/run-autocannon";
 import {
   Area,
   AreaChart,
@@ -8,6 +7,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { TestResult } from "@/lib/run-autocannon";
 
 interface ComparisonChartProps {
   results: TestResult[];
@@ -32,8 +32,8 @@ export function ComparisonChart({ results, metric, title, unit }: ComparisonChar
   });
 
   return (
-    <div className="h-[300px] w-full mt-4">
-      <h4 className="text-sm font-medium mb-4 text-center">{title}</h4>
+    <div className="mt-4 h-[300px] w-full">
+      <h4 className="mb-4 text-center font-medium text-sm">{title}</h4>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
           <defs>
@@ -74,13 +74,13 @@ export function ComparisonChart({ results, metric, title, unit }: ComparisonChar
               if (active && payload && payload.length) {
                 const data = payload[0].payload;
                 return (
-                  <div className="bg-background border rounded-lg p-3 shadow-lg text-xs">
+                  <div className="rounded-lg border bg-background p-3 text-xs shadow-lg">
                     <p className="font-bold text-primary">{data.name}</p>
-                    <p className="text-muted-foreground truncate max-w-[200px] mb-1">
+                    <p className="mb-1 max-w-[200px] truncate text-muted-foreground">
                       {data.fullUrl}
                     </p>
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t">
-                      <span className="font-mono font-bold text-base">
+                    <div className="mt-2 flex items-center gap-2 border-t pt-2">
+                      <span className="font-bold font-mono text-base">
                         {payload[0].value}
                       </span>
                       <span className="text-muted-foreground">{unit}</span>

@@ -9,7 +9,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "API Benchmark",
+  title: {
+    default: "API Benchmark",
+    template: "%s | API Benchmark",
+  },
   description:
     "A lightweight, serverless, and stateless tool to measure your API performance.",
 };
