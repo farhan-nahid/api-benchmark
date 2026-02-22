@@ -1,4 +1,9 @@
-import { TestForm } from "@/components/TestForm";
+import { TestForm } from "./_components/test-form";
+
+export const metadata = {
+  title: "Test",
+  description: "Run tests on your API endpoints.",
+};
 
 export default function TestPage() {
   return (

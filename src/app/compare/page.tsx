@@ -1,4 +1,9 @@
-import { CompareForm } from "@/components/CompareForm";
+import { CompareForm } from "./_components/compare-form";
+
+export const metadata = {
+  title: "Compare",
+  description: "Compare two APIs side by side.",
+};
 
 export default function ComparePage() {
   return (

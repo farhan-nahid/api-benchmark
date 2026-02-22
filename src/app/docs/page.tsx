@@ -1,11 +1,20 @@
-import { Card, CardContent } from "@/components/ui/card";
 import {
   IconAlertCircle,
   IconBolt,
+  IconFileExport,
   IconInfoCircle,
+  IconKey,
+  IconLock,
   IconServer,
   IconShield,
+  IconWorld,
 } from "@tabler/icons-react";
+import { Card, CardContent } from "@/components/ui/card";
+
+export const metadata = {
+  title: "Documentation",
+  description: "Everything you need to know about the API Benchmark App.",
+};
 
 export default function DocsPage() {
   return (
@@ -17,7 +26,7 @@ export default function DocsPage() {
         </p>
       </div>
 
-      <div className="grid gap-8">
+      <div className="grid gap-12">
         <section className="space-y-4">
           <h2 className="flex items-center gap-2 font-bold text-2xl">
             <IconBolt className="h-6 w-6 text-primary" />
@@ -31,19 +40,102 @@ export default function DocsPage() {
                 start a test, the following happens:
               </p>
               <ol className="ml-6 list-decimal space-y-2">
-                <li>Your browser sends a request to our serverless API.</li>
+                <li>
+                  Your browser triggers a <strong>Next.js Server Action</strong> with your
+                  configuration.
+                </li>
                 <li>The server validates the URL for security (SSRF protection).</li>
                 <li>
-                  An in-memory instance of Autocannon is spawned with your configuration.
+                  An in-memory instance of Autocannon is spawned within the serverless
+                  environment.
                 </li>
                 <li>
                   The test runs for the specified duration with the chosen concurrency.
                 </li>
                 <li>
-                  Results are aggregated and returned as JSON to your browser for
+                  Results are aggregated and returned as JSON to your browser for instant
                   visualization.
                 </li>
               </ol>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="flex items-center gap-2 font-bold text-2xl">
+            <IconKey className="h-6 w-6 text-orange-500" />
+            Authentication & Custom Headers
+          </h2>
+          <Card>
+            <CardContent className="space-y-4 pt-6">
+              <p className="text-muted-foreground">
+                Testing protected endpoints is easy with custom header support. This
+                allows you to include API keys, session tokens, or other credentials in
+                your requests.
+              </p>
+              <div className="flex gap-4 rounded-lg border bg-muted/30 p-4">
+                <IconInfoCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                <div className="text-sm">
+                  <p className="mb-1 font-bold">Testing Bearer Tokens</p>
+                  <p className="text-muted-foreground">
+                    To test an endpoint requiring a JWT, set the header name to{" "}
+                    <code className="rounded bg-muted px-1">Authorization</code> and the
+                    value to{" "}
+                    <code className="rounded bg-muted px-1">
+                      Bearer [your_token_here]
+                    </code>
+                    .
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <h4 className="flex items-center gap-2 font-bold">
+                    <IconLock className="h-4 w-4 text-primary" />
+                    Private Endpoints
+                  </h4>
+                  <p className="text-muted-foreground text-sm">
+                    Benchmark internal or protected services by providing necessary
+                    environment-specific headers.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="flex items-center gap-2 font-bold">
+                    <IconWorld className="h-4 w-4 text-primary" />
+                    Custom Agents
+                  </h4>
+                  <p className="text-muted-foreground text-sm">
+                    Set custom User-Agent or other metadata headers to bypass simple bot
+                    detection or for tracking.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="flex items-center gap-2 font-bold text-2xl">
+            <IconFileExport className="h-6 w-6 text-blue-500" />
+            Data Export
+          </h2>
+          <Card>
+            <CardContent className="space-y-4 pt-6">
+              <p className="text-muted-foreground">
+                Need the raw data for your own reports? You can export any benchmark
+                result to CSV format.
+              </p>
+              <ul className="ml-6 list-disc space-y-2 text-muted-foreground text-sm">
+                <li>
+                  <strong>Individual Tests:</strong> Click "Export CSV" on the results
+                  page to get latency percentiles and throughput metrics.
+                </li>
+                <li>
+                  <strong>Comparison Data:</strong> Exporting from Comparison Mode
+                  generates a consolidated file with side-by-side metrics for all tested
+                  endpoints.
+                </li>
+              </ul>
             </CardContent>
           </Card>
         </section>

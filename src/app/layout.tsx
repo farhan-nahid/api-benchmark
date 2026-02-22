@@ -1,6 +1,6 @@
+import { Layout } from "@/components/Layout";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
-import { Layout } from "@/components/Layout";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -9,7 +9,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "API Benchmark",
+  title: {
+    default: "API Benchmark",
+    template: "%s | API Benchmark",
+  },
   description:
     "A lightweight, serverless, and stateless tool to measure your API performance.",
 };
