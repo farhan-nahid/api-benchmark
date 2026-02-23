@@ -10,7 +10,6 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { BenchmarkHeader } from "@/components/benchmark-header";
-import { LatencyChart } from "@/components/charts/LatencyChart";
 import { CommonSettings } from "@/components/common-settings";
 import { MetricCard } from "@/components/metric-card";
 import { PresetSelector } from "@/components/preset-selector";
@@ -29,6 +28,7 @@ import { runTestAction } from "@/lib/actions";
 import { BENCHMARK_PRESETS, type HTTPMethod } from "@/lib/benchmark-types";
 import { exportToCSV } from "@/lib/export";
 import type { TestResult } from "@/lib/run-autocannon";
+import { LatencyChart } from "./latency-chart";
 
 export function TestForm() {
   const [url, setUrl] = useState("https://jsonplaceholder.typicode.com/posts/1");

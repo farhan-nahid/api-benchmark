@@ -1,4 +1,4 @@
-import { TestResult } from "./run-autocannon";
+import type { TestResult } from "./run-autocannon";
 
 export function exportToCSV(results: TestResult | TestResult[]) {
   const data = Array.isArray(results) ? results : [results];

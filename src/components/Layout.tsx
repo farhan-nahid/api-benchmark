@@ -1,21 +1,16 @@
-"use client";
-
 import {
   IconActivity,
   IconBook,
   IconChartBar,
   IconLayersIntersect,
-  IconMenu2,
-  IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { MobileBottomNav } from "./mobile-bottom-nav";
+import { ThemeToggle } from "./theme-toggle";
 import { buttonVariants } from "./ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -50,8 +45,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
 
-          {/* Desktop GitHub Button */}
+          {/* Desktop GitHub Button & Theme Toggle */}
           <div className="hidden items-center space-x-2 md:flex">
+            <ThemeToggle />
             <a
               href="https://github.com/farhan-nahid/api-benchmark"
               target="_blank"
@@ -62,62 +58,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-md p-2 transition-colors hover:bg-accent md:hidden"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <IconX className="h-6 w-6" />
-            ) : (
-              <IconMenu2 className="h-6 w-6" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="border-t bg-background md:hidden">
-            <nav className="container mx-auto flex flex-col space-y-1 px-4 py-4">
-              <Link
-                href="/test"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2 font-medium text-sm transition-colors hover:bg-accent"
-              >
-                <IconChartBar className="h-4 w-4" />
-                Single Test
-              </Link>
-              <Link
-                href="/compare"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2 font-medium text-sm transition-colors hover:bg-accent"
-              >
-                <IconLayersIntersect className="h-4 w-4" />
-                Compare
-              </Link>
-              <Link
-                href="/docs"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2 font-medium text-sm transition-colors hover:bg-accent"
-              >
-                <IconBook className="h-4 w-4" />
-                Docs
-              </Link>
-              <a
-                href="https://github.com/farhan-nahid/api-benchmark"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 font-medium text-sm transition-colors hover:bg-accent"
-              >
-                GitHub
-              </a>
-            </nav>
+          <div className="flex items-center space-x-2 md:hidden">
+            <a
+              href="https://github.com/farhan-nahid/api-benchmark"
+              target="_blank"
+              rel="noreferrer"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            >
+              GitHub
+            </a>
           </div>
-        )}
+        </div>
       </header>
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-20 md:pb-0">{children}</main>
+      <MobileBottomNav />
       <footer className="border-t py-6 md:py-0">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:h-24 md:flex-row">
           <p className="text-center text-muted-foreground text-sm leading-loose md:text-left">
