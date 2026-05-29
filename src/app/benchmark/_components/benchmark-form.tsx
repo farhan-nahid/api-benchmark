@@ -32,7 +32,7 @@ import { exportToCSV } from "@/lib/export";
 import type { TestResult } from "@/lib/run-autocannon";
 import { LatencyChart } from "./latency-chart";
 
-export function TestForm() {
+export function BenchmarkForm() {
   const [url, setUrl] = useState("https://jsonplaceholder.typicode.com/posts/1");
   const [method, setMethod] = useState<HTTPMethod>("GET");
   const [duration, setDuration] = useState(5);
@@ -101,7 +101,7 @@ export function TestForm() {
       ) : (
         <>
           <BenchmarkHeader
-            title="Single API Test"
+            title="Single API Benchmark"
             description="Benchmark a single endpoint with custom configuration."
             onExport={() => result && exportToCSV(result)}
             onReset={() => {
@@ -115,9 +115,9 @@ export function TestForm() {
           {!result ? (
             <Card className="border-2 border-primary/5 shadow-xl">
               <CardHeader>
-                <CardTitle>Test Configuration</CardTitle>
+                <CardTitle>Benchmark Configuration</CardTitle>
                 <CardDescription>
-                  Configure the load test parameters below.
+                  Configure the load benchmark parameters below.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -178,7 +178,7 @@ export function TestForm() {
                   ) : (
                     <div className="flex items-center gap-2">
                       <IconPlayerPlay className="h-4 w-4 fill-current" />
-                      Run Test
+                      Run Benchmark
                     </div>
                   )}
                 </Button>

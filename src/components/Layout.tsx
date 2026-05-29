@@ -23,11 +23,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {/* Desktop Navigation */}
           <nav className="hidden items-center space-x-6 font-medium text-sm md:flex">
             <Link
-              href="/test"
+              href="/benchmark"
               className="flex items-center gap-1 transition-colors hover:text-primary"
             >
               <IconChartBar className="h-4 w-4" />
-              Single Test
+              Single Benchmark
             </Link>
             <Link
               href="/compare"
