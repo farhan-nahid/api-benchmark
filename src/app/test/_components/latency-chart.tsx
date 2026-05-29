@@ -62,7 +62,7 @@ export function LatencyChart({ data }: LatencyChartProps) {
           />
           <Tooltip
             content={({ active, payload }) => {
-              if (active && payload && payload.length) {
+              if (active && payload?.length) {
                 return (
                   <div className="rounded-lg border bg-background p-3 text-xs shadow-lg">
                     <p className="mb-1 font-bold text-primary">
