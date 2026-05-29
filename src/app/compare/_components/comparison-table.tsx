@@ -24,7 +24,10 @@ export function ComparisonTable({ data }: { data: TestResult[] }) {
             </thead>
             <tbody>
               {data.map((res, index) => (
-                <tr key={index} className="border-b transition-colors hover:bg-muted/10">
+                <tr
+                  key={res.url}
+                  className="border-b transition-colors hover:bg-muted/10"
+                >
                   <td className="px-4 py-4">
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
