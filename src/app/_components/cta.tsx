@@ -8,14 +8,14 @@ export function Cta() {
     <section className="w-full py-24 text-center">
       <div className="container mx-auto max-w-3xl px-4">
         <h2 className="mb-6 font-bold text-4xl tracking-tight">
-          Ready to test your API?
+          Ready to benchmark your API?
         </h2>
         <p className="mb-10 text-muted-foreground text-xl">
           No registration required. Just enter a URL and get performance metrics in
           seconds.
         </p>
         <Link
-          href="/test"
+          href="/benchmark"
           className={cn(buttonVariants({ size: "lg" }), "group h-12 px-10 text-base")}
         >
           Launch Benchmarker

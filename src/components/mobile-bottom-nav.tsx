@@ -25,7 +25,7 @@ export function MobileBottomNav() {
 
   const navItems = [
     { href: "/", icon: IconHome, label: "Home" },
-    { href: "/test", icon: IconChartBar, label: "Test" },
+    { href: "/benchmark", icon: IconChartBar, label: "Benchmark" },
     { href: "/compare", icon: IconLayersIntersect, label: "Compare" },
     { href: "/docs", icon: IconBook, label: "Docs" },
   ];

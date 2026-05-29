@@ -21,10 +21,10 @@ export function Hero() {
         </p>
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
-            href="/test"
+            href="/benchmark"
             className={cn(buttonVariants({ size: "lg" }), "group h-12 px-8 text-base")}
           >
-            Start Testing
+            Start Benchmarking
             <IconArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link

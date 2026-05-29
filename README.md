@@ -63,8 +63,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## 📖 Usage
 
-### Single API Test
-1. Navigate to `/test`.
+### Single API Benchmark
+1. Navigate to `/benchmark`.
 2. Enter your API endpoint URL.
 3. Configure duration, connections, headers, and body (optional).
 4. Click **Start Benchmarking**.
