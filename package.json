@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --webpack --port 3000",
     "build": "next build --webpack",
     "pwa": "next build --webpack && next start",
     "build:turbopack": "next build",
